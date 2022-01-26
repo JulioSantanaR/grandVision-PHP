@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="<?php echo constant('URL'); ?>public/css/default.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <script src="<?php echo constant('URL'); ?>public/script/bootstrap.js"></script>
+    <script src="<?php echo constant('URL'); ?>public/js/bootstrap.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     

@@ -27,6 +27,8 @@
 		}
 
 		function actualizarProducto() {
+			$successUpdate = false;
+			$mensaje = "";
 			session_start();
 			$idProducto = $_SESSION['id_verProducto'];
 			$sku = $_POST['sku'];
@@ -38,24 +40,42 @@
 			unset($_SESSION['id_verProducto']);
 
 			if ($this->model->update(['idProducto' => $idProducto, 'sku' => $sku, 'descripcion' => $descripcion, 'marca' => $marca, 'color' => $color, 'precio' => $precio])) {
-				$producto = new Producto();
-				$producto->idProducto = $idProducto;
-				$producto->sku = $sku;
-				$producto->descripcion = $descripcion;
-				$producto->marca = $marca;
-				$producto->color = $color;
-				$producto->precio = $precio;
-				$this->view->producto = $producto;
-				$this->view->mensaje = "Producto actualizado correctamente";
+				$mensaje = "Producto actualizado correctamente";
+				$successDelete = true;
 			} else {
-				$this->view->mensaje = "No se pudo actualizar el producto";
+				$mensaje = "No se pudo actualizar el producto";
 			}
-
-			$this->view->render('main/detalle');
+			
+			$response_array['mensaje'] = $mensaje;
+			$response_array['successDelete'] = $successDelete;
+        	echo json_encode($response_array);
 		}
-		
-		function saludo() {
-			echo "<p>Ejecutaste el método saludo</p>";
+
+		function eliminarProducto() {
+			$successDelete = false;
+			$mensaje = "";
+			$productId = $_POST['productId'];
+			if ($this->model->deleteProduct($productId)) {
+				$successDelete = true;
+				$mensaje = "Producto eliminado correctamente";
+			} else {
+				$mensaje = "No se pudo eliminar el producto";
+			}
+				
+			$response_array['mensaje'] = $mensaje;
+			$response_array['successDelete'] = $successDelete;
+        	echo json_encode($response_array);
+		}
+
+		function showProduct() {
+			$productId = $_POST['productId'];
+			$producto = $this->model->getById($productId);
+
+			session_start();
+			$_SESSION['id_verProducto'] = $producto->idProducto;
+
+			$this->view->producto = $producto;
+			$this->view->render('main/editarProducto');
 		}
 	}
 ?>

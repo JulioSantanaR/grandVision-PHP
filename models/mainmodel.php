@@ -61,10 +61,19 @@ class MainModel extends Model{
                 'idProducto' => $item['idProducto']
             ]);
             return true;
-        }catch(PDOException $e){
-            echo $e;
+        } catch(PDOException $e){
             return false;
         }        
+    }
+
+    public function deleteProduct($idProducto){
+        try{
+            $query = $this->db->connect()->prepare('DELETE FROM catalogoproductos WHERE idProducto = :idProducto');
+            $query->execute(['idProducto' => $idProducto]);
+            return true;
+        } catch(PDOException $e){
+            return false;
+        }
     }
 }
 
